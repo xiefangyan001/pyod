@@ -16,6 +16,7 @@ sys.path.append(
     os.path.abspath(os.path.join(os.path.dirname("__file__"), '..')))
 
 from pyod.models.auto_encoder import AutoEncoder
+from keras.callbacks.callbacks import EarlyStopping
 from pyod.utils.data import generate_data
 from pyod.utils.data import evaluate_print
 
@@ -36,7 +37,11 @@ if __name__ == "__main__":
     # train AutoEncoder detector
     clf_name = 'AutoEncoder'
     clf = AutoEncoder(epochs=30, contamination=contamination)
-    clf.fit(X_train)
+
+    # Testing code
+    cb_earlystop = EarlyStopping(monitor='val_loss', min_delta=0, patience=0, verbose=0,
+                                 mode='auto', baseline=None, restore_best_weights=False)
+    clf.fit(X_train, callbacks=[cb_earlystop])
 
     # get the prediction labels and outlier scores of the training data
     y_train_pred = clf.labels_  # binary labels (0: inliers, 1: outliers)
