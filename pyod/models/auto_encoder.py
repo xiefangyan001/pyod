@@ -188,7 +188,7 @@ class AutoEncoder(BaseDetector):
         return model
 
     # noinspection PyUnresolvedReferences
-    def fit(self, X, y=None):
+    def fit(self, X, y=None, **kwargs):
         """Fit detector. y is optional for unsupervised methods.
 
         Parameters
@@ -234,7 +234,8 @@ class AutoEncoder(BaseDetector):
                                         batch_size=self.batch_size,
                                         shuffle=True,
                                         validation_split=self.validation_size,
-                                        verbose=self.verbose).history
+                                        verbose=self.verbose,
+                                        **kwargs).history
         # Reverse the operation for consistency
         self.hidden_neurons_.pop(0)
         # Predict on X itself and calculate the reconstruction error as
